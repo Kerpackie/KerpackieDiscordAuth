@@ -42,6 +42,7 @@ public class DiscordGuild
     /// the raw representation returned by the API (commonly convertible to a numeric type).
     /// </summary>
     [JsonPropertyName("permissions")]
+    [JsonConverter(typeof(Converters.StringOrNumberConverter))]
     public string? Permissions { get; set; }
 
     /// <summary>
