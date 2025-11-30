@@ -1,3 +1,3 @@
 # Docs
 
-[View API Documentation](api/index.md)
+Documentation for the project.
