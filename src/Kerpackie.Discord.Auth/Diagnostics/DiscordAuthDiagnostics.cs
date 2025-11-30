@@ -41,6 +41,68 @@ public static class DiscordAuthDiagnostics
     public const string ActivityHandlerOnDiscordLogin = "Handler.OnDiscordLogin";
 
     /// <summary>
+    /// Activity name used when retrieving the user's guilds.
+    /// </summary>
+    public const string ActivityGetGuilds = "GetGuilds";
+
+    /// <summary>
+    /// Activity name used when initiating the login flow.
+    /// </summary>
+    public const string ActivityInitiateLogin = "InitiateLogin";
+
+    // Tag names
+    /// <summary>
+    /// Tag key for the Discord API endpoint being called.
+    /// </summary>
+    public const string TagDiscordEndpoint = "discord.endpoint";
+
+    /// <summary>
+    /// Tag key for the HTTP status code returned by Discord.
+    /// </summary>
+    public const string TagDiscordStatusCode = "discord.status_code";
+
+    /// <summary>
+    /// Tag key for the number of guilds retrieved.
+    /// </summary>
+    public const string TagDiscordGuildCount = "discord.guild_count";
+
+    /// <summary>
+    /// Tag key for the Discord user ID.
+    /// </summary>
+    public const string TagDiscordUserId = "discord.user_id";
+
+    /// <summary>
+    /// Tag key indicating if the Discord user is verified.
+    /// </summary>
+    public const string TagDiscordVerified = "discord.verified";
+
+    /// <summary>
+    /// Tag key for the Discord user's locale.
+    /// </summary>
+    public const string TagDiscordLocale = "discord.locale";
+
+    /// <summary>
+    /// Tag key for the return URL after login.
+    /// </summary>
+    public const string TagDiscordReturnUrl = "discord.return_url";
+
+    // Event names
+    /// <summary>
+    /// Event name for a cache hit.
+    /// </summary>
+    public const string EventCacheHit = "CacheHit";
+
+    /// <summary>
+    /// Event name for a cache miss.
+    /// </summary>
+    public const string EventCacheMiss = "CacheMiss";
+
+    /// <summary>
+    /// Event name when rate limited.
+    /// </summary>
+    public const string EventRateLimited = "RateLimited";
+
+    /// <summary>
     /// The shared <see cref="ActivitySource"/> instance created with <see cref="ActivitySourceName"/>.
     /// </summary>
     /// <remarks>

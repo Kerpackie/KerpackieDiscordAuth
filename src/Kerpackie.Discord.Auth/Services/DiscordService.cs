@@ -72,6 +72,8 @@ public class DiscordService : IDiscordService
     /// </remarks>
     public async Task<List<DiscordGuild>?> GetGuildsAsync(string accessToken)
     {
+        using var activity = DiscordAuthDiagnostics.ActivitySource.StartActivity(DiscordAuthDiagnostics.ActivityGetGuilds);
+        
         // Cache Key strategy: "discord_guilds_{ShortHashOfToken}"
         // We use the token hash so different users (or re-logins) get their own cache entries.
         var cacheKey = $"discord_guilds_{accessToken.GetHashCode()}";
@@ -79,8 +81,11 @@ public class DiscordService : IDiscordService
         if (_cache.TryGetValue(cacheKey, out List<DiscordGuild>? cachedGuilds) && cachedGuilds != null)
         {
             _logger.LogDebug("Returning {Count} guilds from cache.", cachedGuilds.Count);
+            activity?.AddEvent(new ActivityEvent(DiscordAuthDiagnostics.EventCacheHit));
             return cachedGuilds;
         }
+
+        activity?.AddEvent(new ActivityEvent(DiscordAuthDiagnostics.EventCacheMiss));
 
         // Start fetching (with pagination)
         var allGuilds = new List<DiscordGuild>();
@@ -110,6 +115,8 @@ public class DiscordService : IDiscordService
         // Cache the full list for a short duration (e.g., 2 minutes)
         // Guild memberships don't change that often.
         _cache.Set(cacheKey, allGuilds, TimeSpan.FromMinutes(2));
+        
+        activity?.SetTag(DiscordAuthDiagnostics.TagDiscordGuildCount, allGuilds.Count);
 
         return allGuilds;
     }
@@ -155,7 +162,7 @@ public class DiscordService : IDiscordService
     public async Task<T?> ExecuteDiscordRequestAsync<T>(string accessToken, string endpoint)
     {
         using var activity = DiscordAuthDiagnostics.ActivitySource.StartActivity($"DiscordRequest: {endpoint}");
-        activity?.SetTag("discord.endpoint", endpoint);
+        activity?.SetTag(DiscordAuthDiagnostics.TagDiscordEndpoint, endpoint);
 
         try 
         {
@@ -173,6 +180,7 @@ public class DiscordService : IDiscordService
 
                 if (response.IsSuccessStatusCode)
                 {
+                    activity?.SetTag(DiscordAuthDiagnostics.TagDiscordStatusCode, (int)response.StatusCode);
                     if (typeof(T) == typeof(string))
                     {
                         var json = await response.Content.ReadAsStringAsync();
@@ -187,7 +195,7 @@ public class DiscordService : IDiscordService
                     var retryAfterSeconds = response.Headers.RetryAfter?.Delta?.TotalSeconds ?? 5;
                     
                     _logger.LogWarning("Rate limited on {Endpoint}. Retry after: {Seconds}s", endpoint, retryAfterSeconds);
-                    activity?.AddEvent(new ActivityEvent("RateLimited"));
+                    activity?.AddEvent(new ActivityEvent(DiscordAuthDiagnostics.EventRateLimited));
 
                     // If wait is short (< 3s) and we haven't retried yet, wait and try again.
                     if (attempt < maxRetries && retryAfterSeconds < 3)
