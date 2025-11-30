@@ -1,0 +1,62 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "src/**.csproj",
+            "**.csproj"
+          ],
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**",
+            "**/tests/**",
+            "**/Test/**"
+          ]
+        }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/**.md"
+        ]
+      },
+      {
+        "files": [
+          "**.md",
+          "toc.yml"
+        ],
+        "exclude": [
+          "obj/**",
+          "bin/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "dest": "_site",
+    "globalMetadata": {
+      "_appName": "Kerpackie Discord Auth Docs",
+      "_appTitle": "Kerpackie Discord Auth Documentation",
+      "_enableSearch": true,
+      "pdf": false
+    },
+    "template": [
+      "default",
+      "modern"
+    ]
+  }
+}
