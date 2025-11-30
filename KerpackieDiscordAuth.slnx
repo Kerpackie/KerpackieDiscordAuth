@@ -5,6 +5,7 @@
     <Project Path="src/Kerpackie.Discord.Auth/Kerpackie.Discord.Auth.csproj" />
   </Folder>
   <Folder Name="/Tests/">
+    <Project Path="Tests/Kerpackie.Discord.Auth.Identity.Tests/Kerpackie.Discord.Auth.Identity.Tests.csproj" />
     <Project Path="Tests/Kerpackie.Discord.Auth.Tests/Kerpackie.Discord.Auth.Tests.csproj" />
   </Folder>
 </Solution>

@@ -29,12 +29,6 @@ jobs:
       - name: Build Project
         run: dotnet build --configuration Release
 
-      - name: Create API Landing Page
-        run: |
-          mkdir -p api
-          echo "# API Reference" > api/index.md
-          echo "" >> api/index.md
-          echo "Select a namespace from the sidebar to view details." >> api/index.md
 
       - name: Install DocFX
         run: dotnet tool update -g docfx
