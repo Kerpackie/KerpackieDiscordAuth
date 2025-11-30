@@ -1,5 +1,14 @@
 <Solution>
   <Folder Name="/docs/" />
+  <Folder Name="/docs/AspireDemo/">
+    <Project Path="docs/AspireDemo/AspireDemo.ApiService/AspireDemo.ApiService.csproj" />
+    <Project Path="docs/AspireDemo/AspireDemo.AppHost/AspireDemo.AppHost.csproj" />
+    <Project Path="docs/AspireDemo/AspireDemo.ServiceDefaults/AspireDemo.ServiceDefaults.csproj" />
+    <Project Path="docs/AspireDemo/AspireDemo.Web/AspireDemo.Web.esproj">
+      <BuildType Project="Debug" />
+      <Build />
+    </Project>
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/Kerpackie.Discord.Auth.Identity/Kerpackie.Discord.Auth.Identity.csproj" />
     <Project Path="src/Kerpackie.Discord.Auth.OpenTelemetry/Kerpackie.Discord.Auth.OpenTelemetry.csproj" />
