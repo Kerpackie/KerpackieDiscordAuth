@@ -15,7 +15,7 @@
           ]
         }
       ],
-      "dest": ".",
+      "dest": "api",
       "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
@@ -24,14 +24,21 @@
     "content": [
       {
         "files": [
-          "**.yml",
-          "**.md"
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "**.md",
+          "toc.yml"
         ],
         "exclude": [
           "obj/**",
           "bin/**",
           "_site/**",
-          "src/**"
+          "src/**",
+          "api/**"
         ]
       }
     ],
