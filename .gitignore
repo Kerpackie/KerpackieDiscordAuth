@@ -4,3 +4,5 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 docs/AspireDemo/AspireDemo.ApiService/appsettings.json
+
+docs/AspireDemo.Basic/AspireDemo.Basic.ApiService/appsettings.json
