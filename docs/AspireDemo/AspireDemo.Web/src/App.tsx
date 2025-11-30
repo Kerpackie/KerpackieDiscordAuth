@@ -52,7 +52,7 @@ function App() {
   }, []);
 
   const handleLogin = () => {
-    window.location.href = `/api/login-discord?returnUrl=${encodeURIComponent(window.location.origin)}`;
+    window.location.href = `/api/auth/discord/login?returnUrl=${encodeURIComponent(window.location.origin)}`;
   };
 
   const handleLogout = () => {

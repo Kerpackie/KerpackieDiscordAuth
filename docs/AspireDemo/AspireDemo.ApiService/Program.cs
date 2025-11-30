@@ -4,9 +4,16 @@ using Microsoft.AspNetCore.Authentication;
 using AspNet.Security.OAuth.Discord;
 
 using Kerpackie.Discord.Auth.Interfaces;
-using Kerpackie.Discord.Auth.Interfaces;
 using Kerpackie.Discord.Auth.Services;
 using Kerpackie.Discord.Auth.Extensions;
+using Kerpackie.Discord.Auth.Endpoints;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using AspireDemo.ApiService.Data;
+using AspireDemo.ApiService.Models;
+using Kerpackie.Discord.Auth.Identity;
+using Kerpackie.Discord.Auth.OpenTelemetry;
+using OpenTelemetry.Trace;
 using AspireDemo.ApiService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,12 +24,23 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddProblemDetails();
 
-// Add Discord Auth
-builder.Services.AddDiscordAuth<DemoDiscordAuthHandler>(builder.Configuration);
+// Add DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("AppDb"));
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// Add Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+// Add Discord Auth with Identity
+builder.Services.AddDiscordAuthWithIdentity<ApplicationUser>(builder.Configuration);
+
+// Add OpenTelemetry Instrumentation
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing => tracing.AddDiscordAuthInstrumentation());
+
 builder.Services.AddOpenApi();
-
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -40,31 +58,33 @@ app.UseAuthorization();
 
 app.MapGet("/", () => "API service is running.");
 
-app.MapGet("/login-discord", async (HttpContext context, string returnUrl = "/") =>
-{
-    await context.ChallengeAsync(DiscordAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties
-    {
-        RedirectUri = returnUrl
-    });
-});
+app.MapDiscordAuth();
 
-app.MapGet("/logout", async (HttpContext context) =>
+app.MapGet("/logout", async (HttpContext context, SignInManager<ApplicationUser> signInManager) =>
 {
-    await context.SignOutAsync("Identity.External");
+    await signInManager.SignOutAsync();
     return Results.Redirect("/");
 });
 
-app.MapGet("/user", async (HttpContext context, [FromServices] IDiscordService discordService) =>
+app.MapGet("/user", async (HttpContext context, [FromServices] IDiscordService discordService, [FromServices] UserManager<ApplicationUser> userManager) =>
 {
-    var token = await context.GetTokenAsync("Identity.External", "access_token");
+    var user = await userManager.GetUserAsync(context.User);
+    if (user == null) return Results.Unauthorized();
+
+    var token = await userManager.GetAuthenticationTokenAsync(user, "Discord", "access_token");
     if (string.IsNullOrEmpty(token)) return Results.Unauthorized();
+    
     return Results.Ok(await discordService.GetUserAsync(token));
 });
 
-app.MapGet("/guilds", async (HttpContext context, [FromServices] IDiscordService discordService) =>
+app.MapGet("/guilds", async (HttpContext context, [FromServices] IDiscordService discordService, [FromServices] UserManager<ApplicationUser> userManager) =>
 {
-    var token = await context.GetTokenAsync("Identity.External", "access_token");
+    var user = await userManager.GetUserAsync(context.User);
+    if (user == null) return Results.Unauthorized();
+
+    var token = await userManager.GetAuthenticationTokenAsync(user, "Discord", "access_token");
     if (string.IsNullOrEmpty(token)) return Results.Unauthorized();
+
     return Results.Ok(await discordService.GetGuildsAsync(token));
 });
 
