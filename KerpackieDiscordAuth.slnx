@@ -1,5 +1,14 @@
 <Solution>
   <Folder Name="/docs/" />
+  <Folder Name="/docs/AspireDemo.Basic/">
+    <Project Path="docs/AspireDemo.Basic/AspireDemo.Basic.ApiService/AspireDemo.Basic.ApiService.csproj" />
+    <Project Path="docs/AspireDemo.Basic/AspireDemo.Basic.AppHost/AspireDemo.Basic.AppHost.csproj" />
+    <Project Path="docs/AspireDemo.Basic/AspireDemo.Basic.ServiceDefaults/AspireDemo.Basic.ServiceDefaults.csproj" />
+    <Project Path="docs/AspireDemo.Basic/AspireDemo.Basic.Web/AspireDemo.Web.esproj">
+      <BuildType Project="Debug" />
+      <Build />
+    </Project>
+  </Folder>
   <Folder Name="/docs/AspireDemo/">
     <Project Path="docs/AspireDemo/AspireDemo.ApiService/AspireDemo.ApiService.csproj" />
     <Project Path="docs/AspireDemo/AspireDemo.AppHost/AspireDemo.AppHost.csproj" />

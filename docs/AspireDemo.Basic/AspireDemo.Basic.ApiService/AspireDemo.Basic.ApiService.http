@@ -1,0 +1,6 @@
+@AspireDemo.Basic.ApiService_HostAddress = http://localhost:5010
+
+GET {{AspireDemo.Basic.ApiService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

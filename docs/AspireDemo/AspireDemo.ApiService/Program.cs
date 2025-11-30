@@ -1,11 +1,5 @@
-using Kerpackie.Discord.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using AspNet.Security.OAuth.Discord;
-
-using Kerpackie.Discord.Auth.Interfaces;
 using Kerpackie.Discord.Auth.Services;
-using Kerpackie.Discord.Auth.Extensions;
 using Kerpackie.Discord.Auth.Endpoints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -13,8 +7,6 @@ using AspireDemo.ApiService.Data;
 using AspireDemo.ApiService.Models;
 using Kerpackie.Discord.Auth.Identity;
 using Kerpackie.Discord.Auth.OpenTelemetry;
-using OpenTelemetry.Trace;
-using AspireDemo.ApiService;
 
 var builder = WebApplication.CreateBuilder(args);
 

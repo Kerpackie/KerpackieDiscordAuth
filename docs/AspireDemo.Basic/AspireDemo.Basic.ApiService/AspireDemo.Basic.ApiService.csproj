@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Kerpackie.Discord.Auth\Kerpackie.Discord.Auth.csproj" />
+    <ProjectReference Include="..\AspireDemo.Basic.ServiceDefaults\AspireDemo.Basic.ServiceDefaults.csproj" />
+  </ItemGroup>
+
+</Project>

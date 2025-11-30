@@ -1,43 +1,49 @@
-# Kerpackie.Discord.Auth Aspire Demo
+# Kerpackie.Discord.Auth Demos
 
-This project demonstrates how to use the `Kerpackie.Discord.Auth` library in a .NET Aspire application with a React frontend.
+This folder contains demo applications showcasing the `Kerpackie.Discord.Auth` library.
 
-## Prerequisites
+## Available Demos
 
-- .NET 10.0 SDK
-- Node.js (LTS recommended)
-- Docker (for Aspire orchestration, though not strictly required for this specific demo as it uses no containers)
+### 1. Full Integration Demo (`AspireDemo`)
+A complete example demonstrating:
+- **ASP.NET Core Identity**: User persistence using Entity Framework Core (InMemory).
+- **OpenTelemetry**: Distributed tracing for authentication flows.
+- **React Frontend**: A modern UI to display user info and guilds.
+- **Aspire Orchestration**: Manages the API and Frontend.
 
-## Project Structure
+**Location**: `docs/AspireDemo/AspireDemo.AppHost`
 
-- **AspireDemo.AppHost**: The Aspire orchestrator project.
-- **AspireDemo.ApiService**: A Minimal API backend using `Kerpackie.Discord.Auth`.
-- **AspireDemo.Web**: A React (Vite) frontend.
+### 2. Basic Demo (`AspireDemo.Basic`)
+A simplified example demonstrating:
+- **Basic Authentication**: Simple in-memory handler without Identity.
+- **Minimal Setup**: The bare minimum required to get Discord Auth working.
+- **React Frontend**: Reuses the same UI.
 
-## Configuration
+**Location**: `docs/AspireDemo.Basic/AspireDemo.Basic.AppHost`
 
-1.  Open `AspireDemo.AppHost/appsettings.json` (or `UserSecrets`).
-2.  Ensure you have your Discord Application credentials configured in the `Kerpackie.Discord.Auth` section (usually in the `ApiService` or shared configuration).
+## Getting Started
 
-**Note**: The `ApiService` expects the following configuration:
-```json
-"Kerpackie.Discord.Auth": {
-  "ClientId": "YOUR_CLIENT_ID",
-  "ClientSecret": "YOUR_CLIENT_SECRET"
-}
-```
+1.  **Prerequisites**:
+    - .NET 10.0 SDK
+    - Node.js (LTS)
+    - Docker (optional, for Aspire)
 
-## Running the Demo
+2.  **Configuration**:
+    Ensure `appsettings.json` (or User Secrets) in the AppHost project contains your Discord credentials:
+    ```json
+    "Kerpackie.Discord.Auth": {
+      "ClientId": "YOUR_CLIENT_ID",
+      "ClientSecret": "YOUR_CLIENT_SECRET"
+    }
+    ```
 
-1.  Open the solution in your IDE (Rider/VS).
-2.  Set `AspireDemo.AppHost` as the startup project.
-3.  Run the project.
-4.  The Aspire Dashboard will launch.
-5.  Click the endpoint link for `webfrontend` to open the React app.
-6.  Click "Login with Discord" to authenticate.
+3.  **Running**:
+    - Open the solution in your IDE.
+    - Set the desired AppHost project as the startup project.
+    - Run the application.
+    - Use the Aspire Dashboard to launch the `webfrontend`.
 
-## Features
+## Documentation
 
-- **Discord Login**: Authenticates using OAuth2.
-- **User Info**: Displays logged-in user's username, avatar, and ID.
-- **Guilds**: Fetches and displays the user's guilds.
+- [**Integration Guide**](INTEGRATION_GUIDE.md): Step-by-step instructions for adding Discord Auth to your own project.
+- [**Architecture**](ARCHITECTURE.md): High-level overview of the demo architecture.
