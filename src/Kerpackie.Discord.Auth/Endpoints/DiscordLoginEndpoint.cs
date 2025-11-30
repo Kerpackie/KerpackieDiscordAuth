@@ -1,4 +1,4 @@
-// filepath: /Users/kerpackie/RiderProjects/KerpackieDiscordAuth/src/Kerpackie.Discord.Auth/Endpoints/DiscordLoginEndpoint.cs
+using Kerpackie.Discord.Auth.Diagnostics;
 using Kerpackie.Discord.Auth.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -43,12 +43,16 @@ public static class DiscordLoginEndpoint
     {
         app.MapGet(settings.LoginPath, (string? returnUrl) =>
         {
+            using var activity = DiscordAuthDiagnostics.ActivitySource.StartActivity(DiscordAuthDiagnostics.ActivityInitiateLogin);
+            
             // Log the incoming login attempt and the optional returnUrl query parameter.
             logger.LogInformation("Initiating Discord Login. ReturnUrl: {ReturnUrl}", returnUrl);
 
             // Determine where to send the user after a successful login:
             // prefer the provided returnUrl query parameter; otherwise use the configured default.
             var targetUrl = !string.IsNullOrEmpty(returnUrl) ? returnUrl : settings.DefaultReturnUrl;
+            
+            activity?.SetTag(DiscordAuthDiagnostics.TagDiscordReturnUrl, targetUrl);
 
             // Build authentication properties:
             // - RedirectUri is where the external provider (Discord) should send the user back to.

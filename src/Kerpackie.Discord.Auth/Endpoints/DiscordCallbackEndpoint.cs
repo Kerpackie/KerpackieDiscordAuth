@@ -94,6 +94,10 @@ public static class DiscordCallbackEndpoint
                     OriginalClaims = p.Claims
                 };
 
+                Activity.Current?.SetTag(DiscordAuthDiagnostics.TagDiscordUserId, info.DiscordId);
+                Activity.Current?.SetTag(DiscordAuthDiagnostics.TagDiscordVerified, info.Verified);
+                Activity.Current?.SetTag(DiscordAuthDiagnostics.TagDiscordLocale, info.Locale);
+
                 // Start a nested diagnostic activity around the application handler invocation.
                 using (DiscordAuthDiagnostics.ActivitySource.StartActivity(DiscordAuthDiagnostics.ActivityHandlerOnDiscordLogin))
                 {
